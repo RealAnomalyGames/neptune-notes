@@ -62,3 +62,36 @@
   flex-direction: column;
   gap: 4px;
 }
+
+.empty-note-list {
+  margin: 16px 4px;
+  color: #666666;
+  font-size: 14px;
+}
+
+.note-item {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: #222222;
+  text-align: left;
+  overflow: hidden;
+}
+
+.note-item:hover {
+  background: #dddddd;
+}
+
+.note-item.active {
+  background: #ffffff;
+  border-color: #c5c5c5;
+}
+
+.note-item-title {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
