@@ -33,7 +33,11 @@ let notes: Note[] = loadNotes();
 let activeNoteId: string | null = null;
 
 function persistNotes(): void {
+  saveStatus.textContent = "Saving...";
+
   saveNotes(notes);
+
+  saveStatus.textContent = "Saved";
 }
 
 function generateId(): string {
@@ -191,6 +195,7 @@ function selectNote(noteId: string): void {
 
   noteTitle.value = note.title;
   noteContent.value = note.content;
+  saveStatus.textContent = "Saved";
 
   renderNotes();
 }
@@ -266,6 +271,10 @@ noteContent.addEventListener("input", () => {
 
   persistNotes();
 });
+
+const saveStatus = document.querySelector<HTMLSpanElement>(
+  "#save-status"
+)!;
 
 clearEditor();
 renderNotes();
