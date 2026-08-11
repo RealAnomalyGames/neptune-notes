@@ -83,14 +83,12 @@ function renderNotes(): void {
   }
 
   for (const note of filteredNotes) {
-    const noteButton = document.createElement("button");
+    const noteItem = document.createElement("div");
 
-    noteButton.type = "button";
-    noteButton.className = "note-item";
-    noteButton.dataset.noteId = note.id;
+    noteItem.className = "note-item";
 
     if (note.id === activeNoteId) {
-      noteButton.classList.add("active");
+      noteItem.classList.add("active");
     }
 
     const title = document.createElement("span");
@@ -98,13 +96,30 @@ function renderNotes(): void {
     title.className = "note-item-title";
     title.textContent = note.title || "Untitled Note";
 
-    noteButton.appendChild(title);
+    const deleteButton = document.createElement("button");
 
-    noteButton.addEventListener("click", () => {
+    deleteButton.type = "button";
+    deleteButton.className = "delete-note-button";
+    deleteButton.textContent = "×";
+    deleteButton.setAttribute(
+      "aria-label",
+      `Delete ${note.title || "Untitled Note"}`
+    );
+
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      deleteNote(note.id);
+    });
+
+    noteItem.appendChild(title);
+    noteItem.appendChild(deleteButton);
+
+    noteItem.addEventListener("click", () => {
       selectNote(note.id);
     });
 
-    noteList.appendChild(noteButton);
+    noteList.appendChild(noteItem);
   }
 }
 
@@ -138,6 +153,26 @@ function addNewNote(): void {
   persistNotes();
 
   selectNote(note.id);
+}
+
+function deleteNote(noteId: string): void {
+  const noteIndex = notes.findIndex((note) => note.id === noteId);
+
+  if (noteIndex === -1) {
+    return;
+  }
+
+  const wasActiveNote = activeNoteId === noteId;
+
+  notes.splice(noteIndex, 1);
+
+  persistNotes();
+
+  if (wasActiveNote) {
+    clearEditor();
+  }
+
+  renderNotes();
 }
 
 newNoteButton.addEventListener("click", () => {
