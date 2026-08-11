@@ -112,23 +112,38 @@
   cursor: pointer;
 }
 
+.note-item:hover {
+  background: #dddddd;
+}
+
+.note-item.active {
+  background: #ffffff;
+  border-color: #c5c5c5;
+}
+
 .note-item-title {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.delete-note-button {
+.note-actions-button {
   flex-shrink: 0;
-  padding: 2px 6px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
   border: 0;
   border-radius: 3px;
   background: transparent;
-  color: #777777;
-  font-size: 14px;
-  line-height: 1;
+  color: #666666;
+  font-size: 18px;
+  line-height: 20px;
+  cursor: pointer;
 }
 
-.delete-note-button:hover {
-  background: #dddddd;
+.note-actions-button:hover {
+  background: #cccccc;
   color: #222222;
 }

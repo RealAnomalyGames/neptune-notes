@@ -96,24 +96,24 @@ function renderNotes(): void {
     title.className = "note-item-title";
     title.textContent = note.title || "Untitled Note";
 
-    const deleteButton = document.createElement("button");
+    const actionsButton = document.createElement("button");
 
-    deleteButton.type = "button";
-    deleteButton.className = "delete-note-button";
-    deleteButton.textContent = "×";
-    deleteButton.setAttribute(
+    actionsButton.type = "button";
+    actionsButton.className = "note-actions-button";
+    actionsButton.textContent = "⋮";
+    actionsButton.setAttribute(
       "aria-label",
-      `Delete ${note.title || "Untitled Note"}`
+      `Actions for ${note.title || "Untitled Note"}`
     );
 
-    deleteButton.addEventListener("click", (event) => {
+    actionsButton.addEventListener("click", (event) => {
       event.stopPropagation();
 
-      deleteNote(note.id);
+      showNoteActions(note);
     });
 
     noteItem.appendChild(title);
-    noteItem.appendChild(deleteButton);
+    noteItem.appendChild(actionsButton);
 
     noteItem.addEventListener("click", () => {
       selectNote(note.id);
@@ -121,6 +121,63 @@ function renderNotes(): void {
 
     noteList.appendChild(noteItem);
   }
+}
+
+function showNoteActions(note: Note): void {
+  const action = window.prompt(
+    `Actions for "${note.title || "Untitled Note"}"\n\n` +
+    "Type R to rename or D to delete."
+  );
+
+  if (!action) {
+    return;
+  }
+
+  const normalizedAction = action.trim().toLowerCase();
+
+  if (normalizedAction === "r") {
+    renameNote(note.id);
+    return;
+  }
+
+  if (normalizedAction === "d") {
+    deleteNote(note.id);
+  }
+}
+
+function renameNote(noteId: string): void {
+  const note = notes.find((item) => item.id === noteId);
+
+  if (!note) {
+    return;
+  }
+
+  const newTitle = window.prompt(
+    "Enter a new note title:",
+    note.title
+  );
+
+  if (newTitle === null) {
+    return;
+  }
+
+  const trimmedTitle = newTitle.trim();
+
+  if (trimmedTitle.length === 0) {
+    note.title = "Untitled Note";
+  } else {
+    note.title = trimmedTitle;
+  }
+
+  note.updatedAt = Date.now();
+
+  persistNotes();
+
+  if (activeNoteId === note.id) {
+    noteTitle.value = note.title;
+  }
+
+  renderNotes();
 }
 
 function selectNote(noteId: string): void {
