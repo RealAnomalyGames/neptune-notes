@@ -32,6 +32,10 @@ const noteContent = document.querySelector<HTMLTextAreaElement>(
 let notes: Note[] = loadNotes();
 let activeNoteId: string | null = null;
 
+function persistNotes(): void {
+  saveNotes(notes);
+}
+
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
@@ -133,6 +137,8 @@ function addNewNote(): void {
 
   notes.unshift(note);
 
+  persistNotes();
+
   selectNote(note.id);
 }
 
@@ -154,6 +160,7 @@ noteTitle.addEventListener("input", () => {
   note.title = noteTitle.value;
   note.updatedAt = Date.now();
 
+  persistNotes();
   renderNotes();
 });
 
@@ -166,6 +173,8 @@ noteContent.addEventListener("input", () => {
 
   note.content = noteContent.value;
   note.updatedAt = Date.now();
+
+  persistNotes();
 });
 
 renderNotes();
