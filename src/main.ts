@@ -4,6 +4,11 @@ import "./styles/editor.css";
 
 import type { Note } from "./types/Note";
 
+import {
+  saveNotes,
+  loadNotes
+} from "./storage/notesStorage";
+
 const newNoteButton = document.querySelector<HTMLButtonElement>(
   "#new-note-button"
 )!;
@@ -24,7 +29,7 @@ const noteContent = document.querySelector<HTMLTextAreaElement>(
   "#note-content"
 )!;
 
-let notes: Note[] = [];
+let notes: Note[] = loadNotes();
 let activeNoteId: string | null = null;
 
 function generateId(): string {
