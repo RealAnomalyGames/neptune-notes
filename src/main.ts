@@ -128,8 +128,6 @@ function clearEditor(): void {
 
   noteTitle.value = "";
   noteContent.value = "";
-
-  renderNotes();
 }
 
 function addNewNote(): void {
@@ -177,7 +175,7 @@ noteContent.addEventListener("input", () => {
   persistNotes();
 });
 
-renderNotes();
 clearEditor();
+renderNotes();
 
 console.log("Neptune Notes initialized.");
